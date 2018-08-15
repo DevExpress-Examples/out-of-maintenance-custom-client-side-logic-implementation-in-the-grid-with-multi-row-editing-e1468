@@ -1,16 +1,8 @@
 using System;
 using System.Data;
-using System.Configuration;
-using System.Web;
-using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.WebControls.WebParts;
-using System.Web.UI.HtmlControls;
-using System.Collections.Generic;
-using System.Collections;
-using DevExpress.Web.ASPxGridView;
-using DevExpress.Web.ASPxEditors;
+using DevExpress.Web;
 using System.Text;
 
 public partial class _Default : System.Web.UI.Page 
@@ -24,7 +16,7 @@ public partial class _Default : System.Web.UI.Page
         {
             list[i].id = -1;
             int vi = ASPxGridView1.VisibleStartIndex + i;
-            ASPxTextBox txtBox1 = (ASPxTextBox)ASPxGridView1.FindRowCellTemplateControl(vi, ASPxGridView1.Columns["Num"] as GridViewDataColumn, "txtBox");
+            ASPxTextBox txtBox1 = (ASPxTextBox)ASPxGridView1.FindRowCellTemplateControl(vi, (GridViewDataColumn)ASPxGridView1.Columns["Num"], "txtBox");
             if (txtBox1 == null) continue;
             try
             {
@@ -32,7 +24,7 @@ public partial class _Default : System.Web.UI.Page
                 for (int j = 0; j < Codes.Length; j++)
                 {
                     string code = Codes.Substring(j, 1);
-                    GridViewDataColumn col = ASPxGridView1.Columns[code] as GridViewDataColumn;
+                    GridViewDataColumn col = (GridViewDataColumn)ASPxGridView1.Columns[code];
                     ASPxComboBox cbx = (ASPxComboBox)ASPxGridView1.FindRowCellTemplateControl(vi, col, "cbx_" + code);
                     if (Convert.ToBoolean(cbx.Value))
                     {
@@ -52,7 +44,7 @@ public partial class _Default : System.Web.UI.Page
 
     private void BindGridToData(ASPxGridView grid)
     {
-        DataTable dt = Session["DT"] as DataTable;
+        DataTable dt = (DataTable)Session["DT"];
         if (dt == null)
         {
             dt = new DataTable();
@@ -80,7 +72,7 @@ public partial class _Default : System.Web.UI.Page
         for (int i = 0; i < Codes.Length; i++)
         {
             string code = Codes.Substring(i,1);
-            GridViewDataColumn col = ASPxGridView1.Columns[code] as GridViewDataColumn;
+            GridViewDataColumn col = (GridViewDataColumn)ASPxGridView1.Columns[code];
             if (col == null)
             {
                 col = new GridViewDataColumn(code);
@@ -94,7 +86,7 @@ public partial class _Default : System.Web.UI.Page
     {
         if (e.Parameters == "post")
         {
-            DataTable dt = Session["DT"] as DataTable;
+            DataTable dt = (DataTable)Session["DT"];
             for (int i = 0; i < list.Length; i++)
             {
                 DataRow row = dt.Rows.Find(list[i].id);
@@ -144,5 +136,13 @@ public partial class _Default : System.Web.UI.Page
         public int id;
         public int num;
         public string code;
+    }
+
+    protected void txtBox_Init(object sender, EventArgs e) {
+        ASPxTextBox tb = (ASPxTextBox)sender;
+        GridViewDataItemTemplateContainer container = (GridViewDataItemTemplateContainer)tb.NamingContainer;
+        tb.Value = DataBinder.Eval(container.DataItem, "Num").ToString();
+        tb.ClientInstanceName = string.Format("tbNum{0}", container.VisibleIndex);
+        tb.ClientSideEvents.ValueChanged = string.Format("function(s,e){{RefreshRow({0})}}", container.VisibleIndex);
     }
 }
