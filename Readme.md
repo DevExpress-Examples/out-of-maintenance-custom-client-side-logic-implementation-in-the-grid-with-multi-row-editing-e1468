@@ -1,3 +1,9 @@
+<!-- default file list -->
+*Files to look at*:
+
+* [Default.aspx](./CS/TestSite/Default.aspx) (VB: [Default.aspx](./VB/TestSite/Default.aspx))
+* [Default.aspx.cs](./CS/TestSite/Default.aspx.cs) (VB: [Default.aspx](./VB/TestSite/Default.aspx))
+<!-- default file list end -->
 # Custom client-side logic implementation in the grid with multi-row editing
 
 
