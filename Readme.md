@@ -1,6 +1,6 @@
 # Custom client-side logic implementation in the grid with multi-row editing
 <!-- run online -->
-**[[Run Online]](https://codecentral.devexpress.com/e1468)**
+**[[Run Online]](https://codecentral.devexpress.com/e1468/)**
 <!-- run online end -->
 
 
